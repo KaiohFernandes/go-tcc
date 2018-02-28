@@ -1,17 +1,10 @@
 package main
 
 import (
-	"app/routes"
-	"log"
-	"net/http"
+	"app/bootstrap"
 )
 
 func main() {
 
-	rotas := routes.Routes{}
-
-	http.HandleFunc("/", rotas.RouteHandler)
-
-	log.Println("Executando...")
-	log.Fatal(http.ListenAndServe(":3000", nil))
+	bootstrap.Initialize()
 }
