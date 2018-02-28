@@ -10,14 +10,16 @@ type Routes struct{
 }
 
 func (route *Routes) RouteHandler() {
+	route.Router = mux.NewRouter()
 
-	route.Router = mux.NewRouter().StrictSlash(true)
-
-	route.Get("/", index)
-	route.Get("/teste", teste)
+	route.routeProvider()
 
 	http.Handle("/", route.Router)
+}
 
+// Get all routes
+func (route *Routes) routeProvider() {
+	UserRoute(route)
 }
 
 func (route *Routes) Get(path string, routeFunc func(http.ResponseWriter, *http.Request)) {

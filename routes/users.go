@@ -1,14 +1,15 @@
 package routes
 
 import (
-	"fmt"
-	"net/http"
+	"app/controller"
 )
 
-func index(req http.ResponseWriter, res *http.Request) {
-	fmt.Fprintf(req, "Hello")
-}
+func UserRoute(route *Routes){
 
-func teste(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Teste")
+	controller := controller.User{}
+
+	route.Get("/", controller.Index)
+	route.Get("/sobre", controller.Sobre)
+	route.Get("/contato", controller.Contato)
+
 }
