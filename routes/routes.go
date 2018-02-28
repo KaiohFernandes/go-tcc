@@ -17,10 +17,7 @@ func (route *Routes) RouteHandler() {
 	http.Handle("/", route.Router)
 }
 
-// Get all routes
-func (route *Routes) routeProvider() {
-	UserRoute(route)
-}
+// Request Verbs
 
 func (route *Routes) Get(path string, routeFunc func(http.ResponseWriter, *http.Request)) {
 	route.Router.HandleFunc(path, routeFunc).Methods("GET")
