@@ -1,6 +1,16 @@
 package database
 
-type Database struct {
+type Database interface {
+	//OpenConnection()
+	CloseConnection()
+	Get()
+	GetById(id int)
+	Insert()
+	Update()
+	Delete()
+}
+
+type DatabaseConfig struct {
 	source string
 	url string
 	user string
@@ -8,21 +18,7 @@ type Database struct {
 	port int
 }
 
-func (db *Database) Initialize() string{
-
-	db.Config()
-
-	if db.source == "firebase" {
-		fb := Firebase{}
-		fb.Connect(db)
-		return ""//fb.Firebase{}.Connect(db)
-	}
-
-	return ""
-
-}
-
-func (db *Database) Config(){
+func (db *DatabaseConfig) config(){
 	db.source = "firebase"
 	db.url = "path/to/serviceAccountKey.json"
 }

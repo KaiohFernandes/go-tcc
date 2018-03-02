@@ -2,47 +2,57 @@ package database
 
 import (
 	"log"
-	"fmt"
-
-	firebase "firebase.google.com/go"
-	"google.golang.org/api/option"
-	"golang.org/x/net/context"
-	"google.golang.org/api/iterator"
 )
+// 	"fmt"
+
+// 	firebase "firebase.google.com/go"
+// 	"google.golang.org/api/option"
+// 	"golang.org/x/net/context"
+// 	"google.golang.org/api/iterator"
+// )
 
 type Firebase struct{
-	Database *Database
+	DatabaseConfig
 }
 
-func (fb *Firebase) Connect(dbConfig *database.Database){
+func (fb *Firebase) Initialize() {
+	fb.config()
+	fb.OpenConnection()
+}
 
-	ctx := context.Background()
+func (fb *Firebase) OpenConnection(){
+	log.Println("Database:", fb.source)
+} 
 
-	// Use a service account
-	sa := option.WithCredentialsFile("path/to/serviceAccountKey.json")
-	app, err := firebase.NewApp(ctx, nil, sa)
-	if err != nil {
-		log.Fatalln(err)
-	}
+// func (fb *Firebase) Open(dbConfig *Firebase){
 
-	client, err := app.Firestore(ctx)
-	if err != nil {
-		log.Fatalln(err)
-	}
+// 	ctx := context.Background()
 
-	iter := client.Collection("users").Documents(ctx)
-	for {
-		doc, err := iter.Next()
+// 	// Use a service account
+// 	sa := option.WithCredentialsFile("path/to/serviceAccountKey.json")
+// 	app, err := firebase.NewApp(ctx, nil, sa)
+// 	if err != nil {
+// 		log.Fatalln(err)
+// 	}
 
-		if err == iterator.Done {
-			break
-		}
+// 	client, err := app.Firestore(ctx)
+// 	if err != nil {
+// 		log.Fatalln(err)
+// 	}
+
+// 	iter := client.Collection("users").Documents(ctx)
+// 	for {
+// 		doc, err := iter.Next()
+
+// 		if err == iterator.Done {
+// 			break
+// 		}
 		
-		if err != nil {
-			log.Fatalf("Failed to iterate: %v", err)
-		}
+// 		if err != nil {
+// 			log.Fatalf("Failed to iterate: %v", err)
+// 		}
 
-		fmt.Println(doc.Data())
-	}
+// 		fmt.Println(doc.Data())
+// 	}
 
-}
+// }

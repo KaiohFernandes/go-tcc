@@ -9,14 +9,12 @@ import (
 
 func Initialize() {
 	
-	db := database.Database{}
-	dbInit := db.Initialize()
-
-	log.Println(dbInit)
+	db := database.Firebase{}
+	db.Initialize()
 
 	route := routes.Routes{}
 	route.RouteHandler();
 
 	log.Println("Executando...")
-	log.Fatal(http.ListenAndServe(":3000", nil))
+	log.Fatal(http.ListenAndServe(":3001", nil))
 }
