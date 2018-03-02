@@ -1,14 +1,20 @@
 package bootstrap
 
 import (
-	"app/routes"
+	"routes"
+	"database"
 	"log"
 	"net/http"
 )
 
 func Initialize() {
+	
+	db := database.Database{}
+	dbInit := db.Initialize()
 
-	route := &routes.Routes{}
+	log.Println(dbInit)
+
+	route := routes.Routes{}
 	route.RouteHandler();
 
 	log.Println("Executando...")
