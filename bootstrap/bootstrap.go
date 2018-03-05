@@ -4,13 +4,17 @@ import (
 	"routes"
 	"database"
 	"log"
+	"fmt"
 	"net/http"
 )
 
 func Initialize() {
 	
 	db := database.Firebase{}
-	db.Initialize()
+	client := db.Initialize()
+	data := db.Get(client, "users")
+	fmt.Println(data)
+	db.CloseConnection(client)
 
 	route := routes.Routes{}
 	route.RouteHandler();

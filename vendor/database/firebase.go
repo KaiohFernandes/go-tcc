@@ -2,7 +2,6 @@ package database
 
 import (
 	"log"
-	"fmt"
 
 	firebase "firebase.google.com/go"
 	"cloud.google.com/go/firestore"
@@ -15,19 +14,16 @@ type Firebase struct{
 	DatabaseConfig
 }
 
-func (fb *Firebase) Initialize() {
+func (fb *Firebase) Initialize() *firestore.Client{
 	fb.config()
 	
-	client := fb.OpenConnection()
+	return fb.OpenConnection()
 	//data := fb.Get(client, "users")
 	//dataId := fb.GetById(client, "users", "akBPrKubfrmB5uIp6b4g")
 	//dataWhere := fb.GetWhere(client, "users", "first", "==", "Ada")
 	//create := fb.Create(client, "users", data)
 	//delete := fb.Delete(client, "users", "akBPrKubfrmB5uIp6b4g")
-
-	fmt.Println(data)
-
-	defer fb.CloseConnection(client)
+	//update := fb.Update(client, "users", "G7aS2gAvJE1VHhVQKpaM", data)
 }
 
 func (fb *Firebase) Get(client *firestore.Client, collection string) interface{}{
@@ -101,6 +97,20 @@ func (fb *Firebase) Create(client *firestore.Client, collection string, data map
 	}
 
 	return collection + " created successfully"
+
+}
+
+func (fb *Firebase) Update(client *firestore.Client, collection string, id string, data map[string]interface{}) string{
+
+	ctx := context.Background()
+
+	_, err := client.Collection(collection).Doc(id).Set(ctx, data, firestore.MergeAll)
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	return collection + " updated successfully"
 
 }
 
