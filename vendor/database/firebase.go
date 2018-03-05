@@ -15,7 +15,7 @@ type Firebase struct{
 	Database
 }
 
-func Init() *Firebase{
+func FirebaseInit() *Firebase{
 	fb := &Firebase{}
 
 	fb.config()
@@ -24,11 +24,11 @@ func Init() *Firebase{
 	return fb;
 }
 
-func (fb *Firebase) Get(client *firestore.Client, collection string) interface{}{
+func (fb *Firebase) Get(client *firestore.Client, collection string) [] map[string]interface{}{
 	
 	iter := client.Collection(collection).Documents(fb.ctx)
 
-	var items []interface{}
+	var items [] map[string]interface{}
 	
 	for {
 		doc, err := iter.Next()
@@ -119,7 +119,7 @@ func (fb *Firebase) OpenConnection() *firestore.Client{
 		log.Fatalln(err)
 	}
 
-	client, err := app.Firestore(ctx)
+	client, err := app.Firestore(fb.ctx)
 	if err != nil {
 		log.Fatalln(err)
 	}

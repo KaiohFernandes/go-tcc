@@ -3,18 +3,26 @@ package controller
 import (
 	"fmt"
 	"net/http"
+	"log"
+
+	"app/model"
 )
 
-type User struct {}
+func Index(req http.ResponseWriter, res *http.Request) {
 
-func (user *User) Index(req http.ResponseWriter, res *http.Request) {
-	fmt.Fprintf(req, "Hello")
+	db := model.Init()
+
+	for _, d := range db.GetUsers(){
+		log.Println(d["first"])
+   	}
+	
+	fmt.Fprintf(req, "Inicio")
 }
 
-func (user *User) Sobre(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Sobre")
+func Sobre(req http.ResponseWriter, res *http.Request) {
+	fmt.Fprintf(req, "Sobre")
 }
 
-func (user *User) Contato(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Contato")
+func Contato(req http.ResponseWriter, res *http.Request) {
+	fmt.Fprintf(req, "Contato")
 }
