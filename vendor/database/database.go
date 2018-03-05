@@ -1,13 +1,13 @@
 package database
 
 type Database interface {
-	//OpenConnection()
-	CloseConnection()
-	Get()
-	GetById(id int)
-	Insert()
-	Update()
-	Delete()
+	// OpenConnection()
+	// CloseConnection()
+	// Get()
+	// GetById(id int)
+	// Insert()
+	// Update()
+	// Delete()
 }
 
 type DatabaseConfig struct {
