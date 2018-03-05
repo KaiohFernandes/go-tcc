@@ -10,15 +10,15 @@ import (
 
 func Initialize() {
 	
-	db := database.Firebase{}
-	client := db.Initialize()
+	db := database.Init();
+	client := db.OpenConnection();
 	data := db.Get(client, "users")
 	fmt.Println(data)
-	db.CloseConnection(client)
+	defer db.CloseConnection(client)
 
 	route := routes.Routes{}
 	route.RouteHandler();
 
 	log.Println("Executando...")
-	log.Fatal(http.ListenAndServe(":3001", nil))
+	log.Fatal(http.ListenAndServe(":3000", nil))
 }

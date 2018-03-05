@@ -1,16 +1,6 @@
 package database
 
-type Database interface {
-	// OpenConnection()
-	// CloseConnection()
-	// Get()
-	// GetById(id int)
-	// Insert()
-	// Update()
-	// Delete()
-}
-
-type DatabaseConfig struct {
+type Database struct {
 	source string
 	url string
 	user string
@@ -18,7 +8,7 @@ type DatabaseConfig struct {
 	port int
 }
 
-func (db *DatabaseConfig) config(){
+func (db *Database) config(){
 	db.source = "firebase"
 	db.url = "path/to/serviceAccountKey.json"
 }
