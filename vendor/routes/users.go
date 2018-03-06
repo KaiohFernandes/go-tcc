@@ -6,8 +6,6 @@ import (
 
 func UserRoute(route *Routes){
 
-	route.Get("/", controller.Index)
-	route.Get("/sobre", controller.Sobre)
-	route.Get("/contato", controller.Contato)
+	route.Get("/users", controller.Index)
 
 }

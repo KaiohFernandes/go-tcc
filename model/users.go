@@ -20,7 +20,7 @@ func Init() *UsersModel{
 
 }
 
-func (usersModel *UsersModel) GetUsers() [] map[string] interface{} {
+func (usersModel *UsersModel) GetUsers() [] map[string]interface{} {
 
 	defer usersModel.db.CloseConnection(usersModel.client)
 	return usersModel.db.Get(usersModel.client, "users")
