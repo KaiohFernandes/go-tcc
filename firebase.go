@@ -13,6 +13,8 @@ import (
   
 func main(){
 
+	log.Printf("ae")
+
 	ctx := context.Background()
 
 	// Use a service account
