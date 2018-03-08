@@ -2,6 +2,7 @@ package database
 
 import (
 	"log"
+	"reflect"
 
 	firebase "firebase.google.com/go"
 	"cloud.google.com/go/firestore"
@@ -25,7 +26,7 @@ func FirebaseInit() *Firebase{
 }
 
 func (fb *Firebase) Get(client *firestore.Client, collection string) [] map[string]interface{}{
-	
+
 	iter := client.Collection(collection).Documents(fb.ctx)
 
 	var items [] map[string]interface{}
@@ -39,6 +40,8 @@ func (fb *Firebase) Get(client *firestore.Client, collection string) [] map[stri
 		if err != nil {
 			log.Fatalf("Failed to iterate: %v", err)
 		}
+
+		log.Println( doc.Data() )
 		
 		items = append(items, doc.Data())
 	}

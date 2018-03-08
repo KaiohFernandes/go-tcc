@@ -3,7 +3,8 @@ package controller
 import (
 	"fmt"
 	"net/http"
-	"log"
+	_ "log"
+	"encoding/json"
 
 	"app/model"
 )
@@ -11,12 +12,10 @@ import (
 func Index(req http.ResponseWriter, res *http.Request) {
 
 	db := model.Init()
+	data := db.GetUsers()
+	jsonString, _ := json.Marshal(data)
 
-	for _, d := range db.GetUsers(){
-		log.Println(d["first"])
-   	}
-	
-	fmt.Fprintf(req, "Inicio")
+	fmt.Fprintf(req, string(jsonString))
 }
 
 func Sobre(req http.ResponseWriter, res *http.Request) {
