@@ -1,27 +1,50 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
-	_ "log"
-	"encoding/json"
+	"github.com/gorilla/mux"
 
+	"helpers"
 	"app/model"
 )
 
-func Index(req http.ResponseWriter, res *http.Request) {
+func GetUsers(res http.ResponseWriter, req *http.Request) {
 
-	db := model.Init()
+	db := model.UsersInit()
 	data := db.GetUsers()
-	jsonString, _ := json.Marshal(data)
-
-	fmt.Fprintf(req, string(jsonString))
+	
+	helpers.Render(res, data)
 }
 
-func Sobre(req http.ResponseWriter, res *http.Request) {
-	fmt.Fprintf(req, "Sobre")
+func GetUser(res http.ResponseWriter, req *http.Request) {
+
+	vars := mux.Vars(req)
+	data := model.UsersInit().GetUser( vars["documentId"] )
+
+	helpers.Render(res, data)
 }
 
-func Contato(req http.ResponseWriter, res *http.Request) {
-	fmt.Fprintf(req, "Contato")
+func CreateUser(res http.ResponseWriter, req *http.Request) {
+
+	body := helpers.JsonDecode(res, req)
+	data := model.UsersInit().CreateUser( body )
+
+	helpers.Render(res, data)
+}
+
+func UpdateUser(res http.ResponseWriter, req *http.Request) {
+
+	body := helpers.JsonDecode(res, req)
+	vars := mux.Vars(req)
+	data := model.UsersInit().UpdateUser(vars["documentId"], body)
+
+	helpers.Render(res, data)
+}
+
+func DeleteUser(res http.ResponseWriter, req *http.Request) {
+
+	vars := mux.Vars(req)
+	data := model.UsersInit().DeleteUser(vars["documentId"])
+
+	helpers.Render(res, data)
 }

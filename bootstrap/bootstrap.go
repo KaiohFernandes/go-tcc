@@ -12,5 +12,5 @@ func Initialize() {
 	route.RouteHandler();
 
 	log.Println("Executando...")
-	log.Fatal(http.ListenAndServe(":3002", nil))
+	log.Fatal(http.ListenAndServe(":3000", nil))
 }

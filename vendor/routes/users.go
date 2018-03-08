@@ -6,8 +6,9 @@ import (
 
 func UserRoute(route *Routes){
 
-	route.Get("/", controller.Index)
-	route.Get("/sobre", controller.Sobre)
-	route.Get("/contato", controller.Contato)
-
+	route.Get("/users", controller.GetUsers)
+	route.Get("/users/{documentId}", controller.GetUser)
+	route.Post("/users", controller.CreateUser)
+	route.Put("/users/{documentId}", controller.UpdateUser)
+	route.Delete("/users/{documentId}", controller.DeleteUser)
 }
