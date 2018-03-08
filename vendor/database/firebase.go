@@ -55,9 +55,9 @@ func (fb *Firebase) Get(client *firestore.CollectionRef, collection string) [] m
 	return items
 }
 
-func (fb *Firebase) GetById(client *firestore.Client, collection string, id string) map[string] interface{} {
+func (fb *Firebase) GetById(client *firestore.DocumentRef, collection string) map[string] interface{} {
 
-	item, err := client.Collection(collection).Doc(id).Get(fb.ctx)
+	item, err := client.Get(fb.ctx)
 
 	if err != nil {
 		return map[string]interface{}{"message": collection + " data not found"}

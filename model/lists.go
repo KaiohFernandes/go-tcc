@@ -2,49 +2,44 @@ package model
 
 import (
 	"database"
-	"cloud.google.com/go/firestore"
 )
 
 type ListsModel struct{
-	db *database.Firebase
-	client *firestore.Client
+	Model
 }
 
-func ListsInit() *ListsModel{
-
-	listsModel :=  &ListsModel{}
+func (listsModel *ListsModel) Init() *ListsModel {
 	listsModel.db = database.FirebaseInit()
 	listsModel.client = listsModel.db.OpenConnection()
 
-	return listsModel;
-
+	return listsModel
 }
 
-func (listsModel *ListsModel) GetLists() [] map[string]interface{} {
+func (listsModel *ListsModel) GetAll() [] map[string]interface{} {
 
 	defer listsModel.db.CloseConnection(listsModel.client)
-	return listsModel.db.Get(listsModel.client.Collection("lists").Doc("G6sFnGbdbPxKo7GMbYr9").Collection("cards"), "lists")
+	return listsModel.db.Get(listsModel.collection, "lists")
 } 
 
-func (listsModel *ListsModel) GetList( documentId string ) map[string]interface{} {
+func (listsModel *ListsModel) GetOne() map[string]interface{} {
 
 	defer listsModel.db.CloseConnection(listsModel.client)
-	return listsModel.db.GetById(listsModel.client, "lists", documentId)
+	return listsModel.db.GetById(listsModel.document, "lists")
 } 
 
-func (listsModel *ListsModel) CreateList( body map[string]interface{} ) map[string] string {
+func (listsModel *ListsModel) Create( body map[string]interface{} ) map[string] string {
 
 	defer listsModel.db.CloseConnection(listsModel.client)
 	return listsModel.db.Create(listsModel.client, "lists", body)
 } 
 
-func (listsModel *ListsModel) UpdateList( id string, body map[string]interface{} ) map[string] string {
+func (listsModel *ListsModel) Update( id string, body map[string]interface{} ) map[string] string {
 
 	defer listsModel.db.CloseConnection(listsModel.client)
 	return listsModel.db.Update(listsModel.client, "lists", id, body)
 }
 
-func (listsModel *ListsModel) DeleteList( id string ) map[string] string {
+func (listsModel *ListsModel) Delete( id string ) map[string] string {
 
 	defer listsModel.db.CloseConnection(listsModel.client)
 	return listsModel.db.Delete(listsModel.client, "lists", id)

@@ -10,8 +10,8 @@ import (
 
 func GetUsers(res http.ResponseWriter, req *http.Request) {
 
-	db := model.UsersInit()
-	data := db.GetUsers()
+	model := &model.UsersModel{}
+	data := model.Init().SetCollection("users").GetAll()
 	
 	helpers.Render(res, data)
 }
@@ -19,7 +19,8 @@ func GetUsers(res http.ResponseWriter, req *http.Request) {
 func GetUser(res http.ResponseWriter, req *http.Request) {
 
 	vars := mux.Vars(req)
-	data := model.UsersInit().GetUser( vars["documentId"] )
+	model := &model.UsersModel{}
+	data := model.Init().SetCollection("users", vars["documentId"]).GetOne()
 
 	helpers.Render(res, data)
 }
@@ -27,7 +28,8 @@ func GetUser(res http.ResponseWriter, req *http.Request) {
 func CreateUser(res http.ResponseWriter, req *http.Request) {
 
 	body := helpers.JsonDecode(res, req)
-	data := model.UsersInit().CreateUser( body )
+	model := &model.UsersModel{}
+	data := model.Init().Create( body )
 
 	helpers.Render(res, data)
 }
@@ -36,7 +38,8 @@ func UpdateUser(res http.ResponseWriter, req *http.Request) {
 
 	body := helpers.JsonDecode(res, req)
 	vars := mux.Vars(req)
-	data := model.UsersInit().UpdateUser(vars["documentId"], body)
+	model := &model.UsersModel{}
+	data := model.Init().Update(vars["documentId"], body)
 
 	helpers.Render(res, data)
 }
@@ -44,7 +47,8 @@ func UpdateUser(res http.ResponseWriter, req *http.Request) {
 func DeleteUser(res http.ResponseWriter, req *http.Request) {
 
 	vars := mux.Vars(req)
-	data := model.UsersInit().DeleteUser(vars["documentId"])
+	model := &model.UsersModel{}
+	data := model.Init().Delete(vars["documentId"])
 
 	helpers.Render(res, data)
 }
