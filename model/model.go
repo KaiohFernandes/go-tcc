@@ -5,13 +5,15 @@ import (
 	"cloud.google.com/go/firestore"
 )
 
-type modelInterface interface {
-	Init() *Model
+// padrão terminar com er
+type Modeler interface {
+	Init() Modeler
+	SetCollection(query ...string) Modeler
 	GetAll() [] map[string]interface{}
 	GetOne() map[string]interface{}
 	Create( body map[string]interface{} ) map[string] string
-	Update( body map[string]interface{} ) map[string] string
-	Delete() map[string] string
+	Update( id string, body map[string]interface{} ) map[string] string
+	Delete( id string ) map[string] string
 }
 
 type Model struct {
@@ -21,7 +23,44 @@ type Model struct {
 	document *firestore.DocumentRef
 }
 
-func (model *Model) SetCollection(query ...string) *Model {
+func (m *Model) Init() Modeler {
+	m.db = database.FirebaseInit()
+	m.client = m.db.OpenConnection()
+
+	return m
+}
+
+func (m *Model) GetAll() [] map[string]interface{} {
+
+	defer m.db.CloseConnection(m.client)
+	return m.db.Get(m.collection, "lists")
+} 
+
+func (m *Model) GetOne() map[string]interface{} {
+
+	defer m.db.CloseConnection(m.client)
+	return m.db.GetById(m.document, "lists")
+} 
+
+func (m *Model) Create( body map[string]interface{} ) map[string] string {
+
+	defer m.db.CloseConnection(m.client)
+	return m.db.Create(m.client, "lists", body)
+} 
+
+func (m *Model) Update( id string, body map[string]interface{} ) map[string] string {
+
+	defer m.db.CloseConnection(m.client)
+	return m.db.Update(m.client, "lists", id, body)
+}
+
+func (m *Model) Delete( id string ) map[string] string {
+
+	defer m.db.CloseConnection(m.client)
+	return m.db.Delete(m.client, "lists", id)
+} 
+
+func (m *Model) SetCollection(query ...string) Modeler {
 
 	if query == nil {
 		panic("Error, not have query values")
@@ -30,13 +69,19 @@ func (model *Model) SetCollection(query ...string) *Model {
 	for index, value := range query {
 		
 		if index % 2 == 0 {
-			model.collection = model.client.Collection( value )
+
+			if index == 0 {
+				m.collection = m.client.Collection( value )
+			} else {
+				m.collection = m.document.Collection( value )
+			}
+
 		} else {
-			model.document = model.collection.Doc( value )
+			m.document = m.collection.Doc( value )
 		}
 		
 	}
 
-	return model
+	return m
 
 }

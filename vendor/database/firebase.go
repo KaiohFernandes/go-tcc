@@ -26,7 +26,7 @@ func FirebaseInit() *Firebase{
 }
 
 func (fb *Firebase) Get(client *firestore.CollectionRef, collection string) [] map[string]interface{} {
-	
+
 	iter := client.Documents(fb.ctx)
 
 	var items [] map[string]interface{}
@@ -47,6 +47,8 @@ func (fb *Firebase) Get(client *firestore.CollectionRef, collection string) [] m
 		
 		items = append(items, item)
 	}
+
+	log.Println( items )
 
 	if items == nil {
 		items = append(items, map[string]interface{}{"message": "users not found"})
