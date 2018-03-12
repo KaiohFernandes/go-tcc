@@ -29,7 +29,7 @@ func CreateUser(res http.ResponseWriter, req *http.Request) {
 
 	body := helpers.JsonDecode(res, req)
 	model := &model.Model{}
-	data := model.Init().Create( body )
+	data := model.Init().SetCollection("users").Create( body )
 
 	helpers.Render(res, data)
 }
@@ -39,7 +39,7 @@ func UpdateUser(res http.ResponseWriter, req *http.Request) {
 	body := helpers.JsonDecode(res, req)
 	vars := mux.Vars(req)
 	model := &model.Model{}
-	data := model.Init().Update(vars["documentId"], body)
+	data := model.Init().SetCollection("users", vars["documentId"]).Update(body)
 
 	helpers.Render(res, data)
 }
@@ -48,7 +48,7 @@ func DeleteUser(res http.ResponseWriter, req *http.Request) {
 
 	vars := mux.Vars(req)
 	model := &model.Model{}
-	data := model.Init().Delete(vars["documentId"])
+	data := model.Init().SetCollection("users", vars["documentId"]).Delete()
 
 	helpers.Render(res, data)
 }

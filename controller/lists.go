@@ -31,7 +31,7 @@ func CreateList(res http.ResponseWriter, req *http.Request) {
 	body := helpers.JsonDecode(res, req)
 
 	model := &model.Model{}
-	data := model.Init().Create( body )
+	data := model.Init().SetCollection("lists").Create( body )
 
 	helpers.Render(res, data)
 }
@@ -42,7 +42,7 @@ func UpdateList(res http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 
 	model := &model.Model{}
-	data := model.Init().Update(vars["documentId"], body)
+	data := model.Init().SetCollection("lists", vars["documentId"]).Update(body)
 
 	helpers.Render(res, data)
 }
@@ -52,7 +52,7 @@ func DeleteList(res http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 
 	model := &model.Model{}
-	data := model.Init().Delete(vars["documentId"])
+	data := model.Init().SetCollection("lists", vars["documentId"]).Delete()
 
 	helpers.Render(res, data)
 }

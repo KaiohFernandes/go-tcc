@@ -25,7 +25,7 @@ func FirebaseInit() *Firebase{
 	return fb;
 }
 
-func (fb *Firebase) Get(client *firestore.CollectionRef, collection string) [] map[string]interface{} {
+func (fb *Firebase) Get(client *firestore.CollectionRef) [] map[string]interface{} {
 
 	iter := client.Documents(fb.ctx)
 
@@ -57,12 +57,12 @@ func (fb *Firebase) Get(client *firestore.CollectionRef, collection string) [] m
 	return items
 }
 
-func (fb *Firebase) GetById(client *firestore.DocumentRef, collection string) map[string] interface{} {
+func (fb *Firebase) GetById(client *firestore.DocumentRef) map[string] interface{} {
 
 	item, err := client.Get(fb.ctx)
 
 	if err != nil {
-		return map[string]interface{}{"message": collection + " data not found"}
+		return map[string]interface{}{"message": "Data not found"}
 	}
 
 	return item.Data()
@@ -98,41 +98,41 @@ func (fb *Firebase) GetWhere(client *firestore.Client, collection string, query 
 	return items
 }
 
-func (fb *Firebase) Create(client *firestore.Client, collection string, data map[string]interface{}) map[string]string{
+func (fb *Firebase) Create(client *firestore.CollectionRef, data map[string]interface{}) map[string]string{
 
-	_, _, err := client.Collection(collection).Add(fb.ctx, data)
+	_, _, err := client.Add(fb.ctx, data)
 
 	if err != nil {
 		panic(err)
 	}
 
 	res := map[string] string{
-		"message" : collection + " created successfully",
+		"message" : "Created successfully",
 	}
 
 	return res
 }
 
-func (fb *Firebase) Update(client *firestore.Client, collection string, id string, data map[string]interface{}) map[string]string{
+func (fb *Firebase) Update(client *firestore.DocumentRef, data map[string]interface{}) map[string]string{
 
-	_, err := client.Collection(collection).Doc(id).Set(fb.ctx, data, firestore.MergeAll)
+	_, err := client.Set(fb.ctx, data, firestore.MergeAll)
 
 	if err != nil {
 		panic(err)
 	}
 
-	return map[string] string {"message": collection + " updated successfully"}
+	return map[string] string {"message": "Updated successfully"}
 }
 
-func (fb *Firebase) Delete(client *firestore.Client, collection string, id string) map[string]string{
+func (fb *Firebase) Delete(client *firestore.DocumentRef) map[string]string{
 
-	_, err := client.Collection(collection).Doc(id).Delete(fb.ctx)
+	_, err := client.Delete(fb.ctx)
 
 	if err != nil {
 		panic( err )
 	}
 
-	return map[string] string {"message": collection + " deleted successfully"}
+	return map[string] string {"message": " deleted successfully"}
 }
 
 func (fb *Firebase) OpenConnection() *firestore.Client{

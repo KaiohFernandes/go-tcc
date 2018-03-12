@@ -12,8 +12,8 @@ type Modeler interface {
 	GetAll() [] map[string]interface{}
 	GetOne() map[string]interface{}
 	Create( body map[string]interface{} ) map[string] string
-	Update( id string, body map[string]interface{} ) map[string] string
-	Delete( id string ) map[string] string
+	Update( body map[string]interface{} ) map[string] string
+	Delete() map[string] string
 }
 
 type Model struct {
@@ -33,31 +33,31 @@ func (m *Model) Init() Modeler {
 func (m *Model) GetAll() [] map[string]interface{} {
 
 	defer m.db.CloseConnection(m.client)
-	return m.db.Get(m.collection, "lists")
+	return m.db.Get(m.collection)
 } 
 
 func (m *Model) GetOne() map[string]interface{} {
 
 	defer m.db.CloseConnection(m.client)
-	return m.db.GetById(m.document, "lists")
+	return m.db.GetById(m.document)
 } 
 
 func (m *Model) Create( body map[string]interface{} ) map[string] string {
 
 	defer m.db.CloseConnection(m.client)
-	return m.db.Create(m.client, "lists", body)
+	return m.db.Create(m.collection, body)
 } 
 
-func (m *Model) Update( id string, body map[string]interface{} ) map[string] string {
+func (m *Model) Update(body map[string]interface{} ) map[string] string {
 
 	defer m.db.CloseConnection(m.client)
-	return m.db.Update(m.client, "lists", id, body)
+	return m.db.Update(m.document, body)
 }
 
-func (m *Model) Delete( id string ) map[string] string {
+func (m *Model) Delete() map[string] string {
 
 	defer m.db.CloseConnection(m.client)
-	return m.db.Delete(m.client, "lists", id)
+	return m.db.Delete(m.document)
 } 
 
 func (m *Model) SetCollection(query ...string) Modeler {
