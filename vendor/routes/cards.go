@@ -11,4 +11,11 @@ func CardsRoute(route *Routes){
 	route.Post("/cards", controller.CreateCard)
 	route.Put("/cards/{documentId}", controller.UpdateCard)
 	route.Delete("/cards/{documentId}", controller.DeleteCard)
+
+	// Cards Style
+	route.Get("/cards/{documentId}/styles", controller.GetCardStyle)
+	route.Post("/cards/{documentId}/styles", controller.CreateCardStyle)
+	route.Put("/cards/{documentId}/styles/{styleId}", controller.UpdateCardStyle)
+	route.Delete("/cards/{documentId}/styles/{styleId}", controller.DeleteCardStyle)
+
 }
