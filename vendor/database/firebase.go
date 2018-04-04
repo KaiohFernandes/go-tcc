@@ -2,8 +2,6 @@ package database
 
 import (
 	"log"
-	_ "reflect"
-
 	firebase "firebase.google.com/go"
 	"cloud.google.com/go/firestore"
 	"google.golang.org/api/option"
@@ -48,8 +46,6 @@ func (fb *Firebase) Get(client *firestore.CollectionRef) [] map[string]interface
 		items = append(items, item)
 	}
 
-	log.Println( items )
-
 	if items == nil {
 		items = append(items, map[string]interface{}{"message": "users not found"})
 	}
@@ -68,9 +64,9 @@ func (fb *Firebase) GetById(client *firestore.DocumentRef) map[string] interface
 	return item.Data()
 }
 
-func (fb *Firebase) GetWhere(client *firestore.Client, collection string, query ...string) [] map[string]interface{} {
+func (fb *Firebase) GetWhere(client *firestore.CollectionRef, query ...string) [] map[string]interface{} {
 
-	iter := client.Collection(collection).Where(query[0], query[1], query[2]).Documents(fb.ctx)
+	iter := client.Where(query[0], query[1], query[2]).Documents(fb.ctx)
 
 	var items [] map[string]interface{}
 
@@ -82,13 +78,13 @@ func (fb *Firebase) GetWhere(client *firestore.Client, collection string, query 
 		}
 
 		if err != nil {
-			log.Fatal(collection, " data not found")
+			panic(err)
 		}
 
 		item := doc.Data();
 		item["id"] = doc.Ref.ID
 
-		items = append(items, doc.Data())
+		items = append(items, item)
 	}
 
 	if items == nil {

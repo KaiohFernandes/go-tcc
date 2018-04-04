@@ -8,6 +8,16 @@ import (
 	"app/model"
 )
 
+func GetCardList(res http.ResponseWriter, req *http.Request) {
+
+	model := &model.Model{}
+	vars := mux.Vars(req)
+
+	data := model.Init().SetCollection("cards").GetQuery("listId", "==", vars["listId"] )
+	helpers.Render(res, data);
+
+}
+
 func GetCards(res http.ResponseWriter, req *http.Request) {
 
 	model := &model.Model{}

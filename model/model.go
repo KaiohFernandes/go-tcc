@@ -11,6 +11,7 @@ type Modeler interface {
 	SetCollection(query ...string) Modeler
 	GetAll() [] map[string]interface{}
 	GetOne() map[string]interface{}
+	GetQuery( query... string ) [] map[string]interface{}
 	Create( body map[string]interface{} ) map[string] string
 	Update( body map[string]interface{} ) map[string] string
 	Delete() map[string] string
@@ -42,6 +43,12 @@ func (m *Model) GetOne() map[string]interface{} {
 	return m.db.GetById(m.document)
 } 
 
+func (m *Model) GetQuery(query... string) [] map[string]interface{} {
+
+	defer m.db.CloseConnection(m.client)
+	return m.db.GetWhere(m.collection, query...)
+}
+ 
 func (m *Model) Create( body map[string]interface{} ) map[string] string {
 
 	defer m.db.CloseConnection(m.client)

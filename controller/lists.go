@@ -8,6 +8,16 @@ import (
 	"app/model"
 )
 
+func GetListUser(res http.ResponseWriter, req *http.Request) {
+
+	model := &model.Model{}
+	vars := mux.Vars(req)
+
+	data := model.Init().SetCollection("lists").GetQuery("userId", "==", vars["userId"] )
+	helpers.Render(res, data);
+
+}
+
 func GetLists(res http.ResponseWriter, req *http.Request) {
 
 	model := &model.Model{}
